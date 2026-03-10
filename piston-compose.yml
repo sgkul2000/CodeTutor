@@ -1,0 +1,36 @@
+# Piston — lightweight single-container code execution engine.
+# Replaces Judge0. No Postgres, no Redis, no cgroup v1 required.
+#
+# Run:
+#   podman compose -f piston-compose.yml up -d
+#
+# Install language runtimes (one-time, after first start):
+#   podman exec piston piston ppman install python
+#   podman exec piston piston ppman install java
+#   podman exec piston piston ppman install javascript
+#
+# Or via the HTTP API:
+#   curl -X POST http://localhost:2000/api/v2/packages \
+#        -H 'Content-Type: application/json' \
+#        -d '{"language":"python","version":"3.10.0"}'
+#
+# Verify runtimes are installed:
+#   curl http://localhost:2000/api/v2/runtimes | python3 -m json.tool
+
+services:
+  piston:
+    image: ghcr.io/engineer-man/piston
+    container_name: piston
+    restart: unless-stopped
+    ports:
+      - "2000:2000"
+    privileged: true
+    security_opt:
+      - seccomp=unconfined   # needed on Podman 5.x for namespace creation
+    volumes:
+      - piston_packages:/piston/packages  # persists installed language runtimes
+    tmpfs:
+      - /piston/jobs                      # ephemeral job dirs — fast, no disk I/O
+
+volumes:
+  piston_packages:

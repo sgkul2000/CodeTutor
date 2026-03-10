@@ -1,0 +1,105 @@
+# ────────────────────────────────────────────────────────────────
+#  Python
+# ────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.Python
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+.env.bak
+
+# Type checking
+.mypy_cache/
+.dmypy.json
+.pytype/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# ────────────────────────────────────────────────────────────────
+#  Environment / Secrets  ← never commit these
+# ────────────────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+*.env.local
+*.env.production
+secrets/
+
+# ────────────────────────────────────────────────────────────────
+#  Node / Frontend
+# ────────────────────────────────────────────────────────────────
+node_modules/
+dist/
+dist-ssr/
+.cache/
+.parcel-cache/
+.next/
+.nuxt/
+.output/
+*.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ────────────────────────────────────────────────────────────────
+#  Claude Code (local settings only; launch.json is kept)
+# ────────────────────────────────────────────────────────────────
+.claude/settings.local.json
+.claude/memory/
+
+# ────────────────────────────────────────────────────────────────
+#  IDE / Editor
+# ────────────────────────────────────────────────────────────────
+.idea/
+.vscode/
+!.vscode/extensions.json
+*.swp
+*.swo
+*~
+
+# ────────────────────────────────────────────────────────────────
+#  OS
+# ────────────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ────────────────────────────────────────────────────────────────
+#  Docker volumes / data directories
+# ────────────────────────────────────────────────────────────────
+judge0_data/
+postgres-data/
+redis-data/
+mongo-data/
+
+# ────────────────────────────────────────────────────────────────
+#  Misc
+# ────────────────────────────────────────────────────────────────
+*.bak
+*.tmp
+*.orig
+.temp/

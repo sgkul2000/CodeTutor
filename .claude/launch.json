@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "FastAPI Backend",
+      "runtimeExecutable": "/Users/shreesh/github.com/sgkul2000/CodeTutor/ai-tutor-backend/.venv/bin/uvicorn",
+      "runtimeArgs": ["app.main:app", "--app-dir", "ai-tutor-backend", "--reload", "--port", "8000"],
+      "port": 8000
+    },
+    {
+      "name": "Vite Frontend",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "ai-tutor-frontend", "run", "dev"],
+      "port": 5173
+    }
+  ]
+}

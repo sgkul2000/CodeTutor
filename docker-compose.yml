@@ -1,0 +1,89 @@
+version: "3.9"
+
+services:
+  # ─── Application Database ─────────────────────────────────────────────────
+  mongodb:
+    image: mongo:7.0
+    container_name: ai-tutor-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: ai_tutor
+
+  # ─── Cache / Message Broker ───────────────────────────────────────────────
+  redis:
+    image: redis:7.2-alpine
+    container_name: ai-tutor-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  # ─── Judge0 Code Execution ────────────────────────────────────────────────
+  judge0-server:
+    image: judge0/judge0:1.13.1
+    container_name: judge0-server
+    restart: unless-stopped
+    ports:
+      - "2358:2358"
+    privileged: true
+    depends_on:
+      - judge0-db
+      - judge0-redis
+    environment:
+      REDIS_HOST: judge0-redis
+      REDIS_PORT: 6379
+      POSTGRES_HOST: judge0-db
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: judge0
+      POSTGRES_USER: judge0
+      POSTGRES_PASSWORD: judge0pass
+    volumes:
+      - ./judge0.conf:/judge0.conf:ro
+
+  judge0-workers:
+    image: judge0/judge0:1.13.1
+    container_name: judge0-workers
+    restart: unless-stopped
+    privileged: true
+    command: ["./scripts/workers"]
+    depends_on:
+      - judge0-server
+    environment:
+      REDIS_HOST: judge0-redis
+      REDIS_PORT: 6379
+      POSTGRES_HOST: judge0-db
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: judge0
+      POSTGRES_USER: judge0
+      POSTGRES_PASSWORD: judge0pass
+    volumes:
+      - ./judge0.conf:/judge0.conf:ro
+
+  judge0-db:
+    image: postgres:15-alpine
+    container_name: judge0-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: judge0
+      POSTGRES_USER: judge0
+      POSTGRES_PASSWORD: judge0pass
+    volumes:
+      - judge0_db_data:/var/lib/postgresql/data
+
+  judge0-redis:
+    image: redis:7.2-alpine
+    container_name: judge0-redis
+    restart: unless-stopped
+    volumes:
+      - judge0_redis_data:/data
+
+volumes:
+  mongodb_data:
+  redis_data:
+  judge0_db_data:
+  judge0_redis_data:
