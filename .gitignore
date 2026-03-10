@@ -103,3 +103,6 @@ mongo-data/
 *.tmp
 *.orig
 .temp/
+
+
+.claude/
